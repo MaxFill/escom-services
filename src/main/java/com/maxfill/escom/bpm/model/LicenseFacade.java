@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 /**
  *
@@ -37,13 +38,13 @@ public class LicenseFacade extends AbstractFacade<License> {
      * @param number
      * @return
      */
-    public License findByNumber(String number){
+    public List<License> findByNumber(String number){
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<License> cq = builder.createQuery(License.class);
         Root<License> c = cq.from(License.class);
         Predicate crit = builder.equal(c.get("number"), number);
         cq.select(c).where(builder.and(crit));
         TypedQuery<License> q = entityManager.createQuery(cq);
-        return q.getSingleResult();
+        return q.getResultList();
     }
 }

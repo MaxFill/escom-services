@@ -10,19 +10,18 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.websocket.OnMessage;
 import javax.websocket.server.ServerEndpoint;
 import java.io.*;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -80,11 +79,12 @@ public class ActivateLicenseWS{
         if (!errors.isEmpty()) {
             return null;
         }
-        License license = licenseFacade.findByNumber(licenseNumber);
-        if (license == null){
+        List<License> licenses = licenseFacade.findByNumber(licenseNumber);
+        if (licenses.isEmpty()){
             errors.add("ERROR: license number is not correct!");
             return null;
         }
+        License license = licenses.get(0);
         if (license.getDateActivate() != null){
             errors.add("ERROR: license already activated!");
             return null;
@@ -101,19 +101,17 @@ public class ActivateLicenseWS{
         license.setDateActivate(new Date());
         licenseFacade.edit(license);
         String activateStr = license.toXML();
-        String criptStr = doCrypto(license.getKey(), activateStr);
-        return criptStr;
+        return doCrypto(license.getKey(), license.getNumber(), activateStr);
     }
 
     /**
-     * Преобразование списка ошибок в Json
+     * Преобразование списка ошибок в строку
      * @param errors
      * @return
      */
     private String errorsToJson(Set<String> errors){
-        StringBuilder sb = new StringBuilder("{\"error\":\"");
+        StringBuilder sb = new StringBuilder();
         errors.stream().forEach(err->sb.append(err).append(" "));
-        sb.append("\"}");
         return sb.toString();
     }
 
@@ -123,30 +121,23 @@ public class ActivateLicenseWS{
      * @param sourceStr
      * @return
      */
-    private String doCrypto(String licenseKey, String sourceStr) {
+    private String doCrypto(String licenseKey, String initVector, String sourceStr) {
         String result = null;
         try {
-            Key secretKey = new SecretKeySpec(licenseKey.getBytes(), "AES");
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
+            SecretKeySpec secretKey = new SecretKeySpec(licenseKey.getBytes("UTF-8"), "AES");
 
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(sourceStr.getBytes());
-            byte[] inputBytes = new byte[(int) sourceStr.length()];
-            inputStream.read(inputBytes);
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
 
-            byte[] outputBytes = cipher.doFinal(inputBytes);
+            byte[] encrypted = cipher.doFinal(sourceStr.getBytes());
+            result = Base64.getEncoder().encodeToString(encrypted);
 
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            outputStream.write(outputBytes);
-            result = outputStream.toString("UTF-8");
-            inputStream.close();
-            outputStream.close();
-        } catch (NoSuchPaddingException | NoSuchAlgorithmException
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException
                 | InvalidKeyException | BadPaddingException
                 | IllegalBlockSizeException | IOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         return result;
     }
-
 }
