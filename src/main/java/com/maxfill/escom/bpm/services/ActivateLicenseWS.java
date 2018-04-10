@@ -117,13 +117,14 @@ public class ActivateLicenseWS{
 
     /**
      * Шифрование строки в AES
-     * @param licenseKey
+     * @param keyInfo
      * @param sourceStr
      * @return
      */
-    private String doCrypto(String licenseKey, String initVector, String sourceStr) {
+    private String doCrypto(String keyInfo, String initVector, String sourceStr) {
         String result = null;
         try {
+            String licenseKey = keyInfo.substring(0, 16);
             IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
             SecretKeySpec secretKey = new SecretKeySpec(licenseKey.getBytes("UTF-8"), "AES");
 

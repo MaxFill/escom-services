@@ -39,6 +39,7 @@ public class LicenseFacade extends AbstractFacade<License> {
      * @return
      */
     public List<License> findByNumber(String number){
+        getEntityManager().getEntityManagerFactory().getCache().evict(License.class);
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<License> cq = builder.createQuery(License.class);
         Root<License> c = cq.from(License.class);
