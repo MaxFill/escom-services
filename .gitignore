@@ -2,3 +2,4 @@
 Будет удалено .gitignore
 Будет удалено .idea/
 Будет удалено target/
+/target/

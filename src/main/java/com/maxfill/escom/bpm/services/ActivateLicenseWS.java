@@ -19,7 +19,6 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.*;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.logging.Level;
@@ -131,7 +130,7 @@ public class ActivateLicenseWS{
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
 
-            byte[] encrypted = cipher.doFinal(sourceStr.getBytes());
+            byte[] encrypted = cipher.doFinal(sourceStr.getBytes("UTF-8"));
             result = Base64.getEncoder().encodeToString(encrypted);
 
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException

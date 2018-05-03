@@ -1,0 +1,90 @@
+docker stop escom-info-storage; docker rm escom-info-storage; docker stop escom-info-wildfly; docker rm escom-info-wildfly;
+
+docker start escom-info-wildfly 
+docker restart escom-info-wildfly;
+
+/* начальные сборки */
+docker build --rm -t ubuntu1604 /home/docker/ubuntu/
+docker build --rm -t escom-info-storage-img /home/docker/escom-info/datastore/
+docker build --rm -t escom-info-wildfly-img /home/docker/escom-info/wildfly/
+
+/* запуски */
+docker run --name escom-info-storage escom-info-storage-img true;
+docker run --name escom-info-wildfly -d --volumes-from escom-info-storage -p 9443:8443 escom-info-wildfly-img 
+docker run --name escom-info-wildfly --restart unless-stopped -d --volumes-from escom-info-storage -p 9443:8443 escom-info-storage-img 
+
+netstat -ltupn
+docker ps -a
+
+/* если контейнер РАБОТАЕТ, то подключиться к нему можно так : */
+docker exec -i -t escom-info-wildfly bash
+
+/* создание базы данных */
+mysql -uroot -p
+RTY789zxc0
+CREATE DATABASE escom_srv DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+/* создание пользователя */
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'RTY789zxc0';
+GRANT ALL PRIVILEGES ON escom_srv.* TO 'admin'@'localhost' WITH GRANT OPTION;
+mysql> FLUSH PRIVILEGES;
+
+/* если контейнер НЕ работает, то подключаемся так: */
+docker run -it wildfly-img /bin/bash
+docker run -it datastorage-img /bin/bash
+
+docker cp wildfly:/opt/wildfly/standalone/configuration/log* /home/escom/
+
+cd /opt/wildfly/standalone/
+ 
+nl2br
+
+/* установка обновлений */
+docker cp /opt/wildfly/standalone/configuration/wildfly.jks  datastorage:/opt/wildfly/standalone/configuration/
+docker cp /opt/wildfly/standalone/configuration/License_Ru.pdf  datastorage:/opt/wildfly/standalone/configuration/
+docker cp /home/docker/datastore/escom-bpm-ear-1.0-SNAPSHOT.ear datastorage:/opt/wildfly/standalone/deployments/
+docker cp /opt/wildfly/standalone/jasper_reports/ datastorage:/opt/wildfly/standalone/
+docker cp /opt/wildfly/standalone/help/ datastorage:/opt/wildfly/standalone/
+
+docker cp opencart_opencart_1:/opt/bitnami/apache/conf/vhost/htaccess/opencart-htacess.conf /home/opencart/
+
+/* сохранение данных */
+docker exec opencart_opencart_1 tar Ccf $(dirname SRC_PATH) - $(basename SRC_PATH) | tar Cxf DEST_PATH -
+docker exec opencart_opencart_1 mysqldump -uroot --password= -hmariadb bitnami_opencart > bitnami_opencart.sql
+
+docker run --rm --volumes-from opencart_opencart_1 -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /bitnami
+
+
+/* удаление */
+docker volume ls
+удалить все оборванные тома
+docker volume prune
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker volume rm ...
+docker system prune -a
+
+/* удалить все образы */
+
+
+---- MYSQL -----
+SHOW VARIABLES LIKE'character%';
+SHOW VARIABLES LIKE 'collation%';
+SHOW DATABASES;
+
+SELECT User,Host FROM mysql.user;
+SET PASSWORD FOR admin@localhost = PASSWORD('RTY789zxc0');
+GRANT ALL PRIVILEGES ON escomdb.* TO 'admin'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+http://wiki.russianfedora.pro/index.php?title=Docker
+
+/* загрузки для сайта */
+docker cp /home/opencart/catalog/language opencart_opencart_1:/opt/bitnami/opencart/catalog/
+docker cp /home/opencart/theme524-update.zip opencart_opencart_1:/opt/bitnami/opencart/
+docker cp /home/opencart/opencart-3.0.2.0-rs.zip opencart_opencart_1:/opt/bitnami/opencart/
+docker cp /home/opencart/ opencart_opencart_1:/opt/bitnami/opencart/
+
+
+
+
+
