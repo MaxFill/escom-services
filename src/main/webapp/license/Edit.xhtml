@@ -3,41 +3,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
 
         <p:dialog id="LicenseEditDlg" widgetVar="LicenseEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditLicenseTitle}">
             <h:form id="LicenseEditForm">
-                <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{licenseController.selected != null}">
+                <h:panelGroup id="display">           
+                    <p:panelGrid columns="2" rendered="#{licenseBean.selected != null}">
                         <p:outputLabel value="Наименование:" for="name" indicateRequired="true"/>
-                        <p:inputText id="name" value="#{licenseController.selected.name}" 
+                        <p:inputText id="name" value="#{licenseBean.selected.name}" 
                                      required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_name}"/>
                         
                         <p:outputLabel value="Номер:" for="number" indicateRequired="true"/>
-                        <p:inputMask id="number" value="#{licenseController.selected.number}" 
+                        <p:inputMask id="number" value="#{licenseBean.selected.number}" 
                                      mask="999-999-999.9999"
                                      required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_number}"/>
                         
                         <p:outputLabel value="Срок действия:" for="dateTerm" indicateRequired="true"/>
-                        <p:calendar id="dateTerm" value="#{licenseController.selected.dateTerm}" 
+                        <p:calendar id="dateTerm" value="#{licenseBean.selected.dateTerm}" 
                                     styleClass="ui-grid-col-12"                                     
                                     showButtonPanel="true" locale="ru"                                
                                     navigator="true" yearRange="c-120:c+20"                                
                                     required="true" requiredMessage="Поле [Срок действия] должно быть заполнено!">
                         </p:calendar> 
+                        
+                        <p:outputLabel value="Дата активации:" for="dateActive"/>
+                        <p:calendar id="dateActive" value="#{licenseBean.selected.dateActivate}" 
+                                    styleClass="ui-grid-col-12"                                     
+                                    showButtonPanel="true" locale="ru"                                
+                                    navigator="true" yearRange="c-120:c+20">
+                        </p:calendar> 
                                                                         
                         <p:outputLabel value="Кол-во:" for="total" indicateRequired="true"/>
-                        <p:inputText id="total" value="#{licenseController.selected.total}" 
+                        <p:inputText id="total" value="#{licenseBean.selected.total}" 
                                      required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_total}"/>
                         
                         <p:outputLabel value="Лицензиат:" for="licensor" indicateRequired="true"/>
-                        <p:inputText id="licensor" value="#{licenseController.selected.licensor}" 
+                        <p:inputText id="licensor" value="#{licenseBean.selected.licensor}" 
                                      required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_licensor}"/>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{licenseController.update}" value="#{bundle.Save}" 
+                    <p:commandButton actionListener="#{licenseBean.update}" value="#{bundle.Save}" 
                                      update="display,:LicenseListForm:datalist,:growl" 
                                      oncomplete="handleSubmit(args, 'LicenseEditDialog');"/>
                     <p:commandButton value="#{bundle.Cancel}" immediate="true" onclick="LicenseEditDialog.hide()"/>

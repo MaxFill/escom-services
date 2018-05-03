@@ -15,8 +15,8 @@
         <ui:define name="body">
             <h:form id="LicenseListForm">
                 <p:panelGrid columns="1" layout="grid" columnClasses="ui-grid-col-12" styleClass="ui-grid-col-12">
-                    <p:dataTable id="datalist" value="#{licenseController.items}" var="item"
-                                selectionMode="single" selection="#{licenseController.selected}"
+                    <p:dataTable id="datalist" value="#{licenseBean.items}" var="item"
+                                selectionMode="single" selection="#{licenseBean.selected}"
                                 rowKey="#{item.id}"
                                 emptyMessage="Ничего не найдено"
                                 paginator="true" paginatorPosition="bottom" 
@@ -51,9 +51,9 @@
                             <h:outputText value="#{item.licensor}"/>
                         </p:column>
                         <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{licenseController.prepareCreate}" update=":LicenseCreateForm" oncomplete="PF('LicenseCreateDialog').show()"/>                            
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":LicenseEditForm" oncomplete="PF('LicenseEditDialog').show()" disabled="#{empty licenseController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{licenseController.destroy}" update=":growl,datalist" disabled="#{empty licenseController.selected}"/>
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{licenseBean.prepareCreate}" update=":LicenseCreateForm" oncomplete="PF('LicenseCreateDialog').show()"/>                            
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":LicenseEditForm" oncomplete="PF('LicenseEditDialog').show()" disabled="#{empty licenseBean.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{licenseBean.destroy}" update=":growl,datalist" disabled="#{empty licenseBean.selected}"/>
                         </f:facet>
                     </p:dataTable>
                 </p:panelGrid>

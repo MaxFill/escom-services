@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-@Named("licenseController")
+@Named
 @SessionScoped
 public class LicenseBean implements Serializable {
     private static final long serialVersionUID = 4642270371945216061L;
@@ -122,7 +122,7 @@ public class LicenseBean implements Serializable {
     }
 
     @FacesConverter(forClass = License.class)
-    public static class LicenseControllerConverter implements Converter {
+    public static class licenseBeanConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
@@ -130,7 +130,7 @@ public class LicenseBean implements Serializable {
                 return null;
             }
             LicenseBean controller = (LicenseBean) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "licenseController");
+                    getValue(facesContext.getELContext(), null, "licenseBean");
             return controller.getLicense(getKey(value));
         }
 
