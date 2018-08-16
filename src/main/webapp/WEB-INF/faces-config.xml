@@ -8,5 +8,23 @@
             <base-name>/Bundle</base-name>
             <var>bundle</var>
         </resource-bundle>
+        <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
+        <locale-config>
+            <default-locale>en</default-locale>
+        </locale-config>
     </application>
+    
+    <factory>
+        <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
+    </factory>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>         
+                                
+        <navigation-case>
+            <from-outcome>license-card</from-outcome>
+            <to-view-id>/faces/license/license-card.xhtml</to-view-id>
+            <redirect />
+        </navigation-case> 
+    </navigation-rule>
+             
 </faces-config>

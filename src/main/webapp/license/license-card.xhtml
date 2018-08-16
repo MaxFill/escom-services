@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Лицензия"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="LicenseCardForm">                
+                <p:panelGrid layout="grid" columns="2" columnClasses="ui-grid-col-6, ui-grid-col-6" rendered="#{licenseCardBean.license != null}">
+                    <p:outputLabel value="Наименование:" for="name" indicateRequired="true"/>
+                    <p:inputText id="name" value="#{licenseCardBean.license.name}" 
+                                 required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_name}"/>
+
+                    <p:outputLabel value="Номер:" for="number" indicateRequired="true"/>
+                    <p:inputMask id="number" value="#{licenseCardBean.license.number}" 
+                                 mask="999-999-999.9999"
+                                 required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_number}"/>
+
+                    <p:outputLabel value="Срок действия:" for="dateTerm" indicateRequired="true"/>
+                    <p:calendar id="dateTerm" value="#{licenseCardBean.license.dateTerm}" 
+                                styleClass="ui-grid-col-12"                                     
+                                showButtonPanel="true" locale="ru"                                
+                                navigator="true" yearRange="c-120:c+20"              
+                                required="true" requiredMessage="Поле [Срок действия] должно быть заполнено!">
+                    </p:calendar> 
+
+                    <p:outputLabel value="Кол-во:" for="total" indicateRequired="true"/>
+                    <p:inputText id="total" value="#{licenseCardBean.license.total}" 
+                                 required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_total}"/>
+
+                    <p:outputLabel value="Лицензиат:" for="licensor" indicateRequired="true"/>
+                    <p:inputText id="licensor" value="#{licenseCardBean.license.licensor}" 
+                                 required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_licensor}"/>
+                </p:panelGrid>
+                <p:commandButton value="#{bundle.Save}" actionListener="#{licenseCardBean.save}" update="LicenseCardForm"/>
+                <p:commandButton value="#{bundle.Cancel}" immediate="true" action="#{licenseCardBean.onClose()}"/>
+            </h:form>        
+        </ui:define>
+    </ui:composition>
+</html>
