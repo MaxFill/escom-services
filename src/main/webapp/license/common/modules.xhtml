@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-4, ui-grid-col-8" styleClass="ui-grid-col-12">
+        <p:outputLabel value="Модули:" for="modules" indicateRequired="true"/>
+        <p:selectManyMenu id="modules" value="#{licenseBean.modules}" showCheckbox="true" styleClass="ui-grid-col-12">
+            <f:selectItem itemLabel="Процессы" itemValue="processes"/>
+            <f:selectItem itemLabel="Делопроизводство" itemValue="delo"/>
+            <f:selectItem itemLabel="Договоры" itemValue="contracts"/>
+            <f:selectItem itemLabel="Контрагенты" itemValue="partners"/>
+            <f:selectItem itemLabel="Орг.структура" itemValue="staffs"/>
+        </p:selectManyMenu>
+    </p:panelGrid>
+    
+</html>

@@ -11,7 +11,7 @@
         <p:dialog id="LicenseEditDlg" widgetVar="LicenseEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditLicenseTitle}">
             <h:form id="LicenseEditForm">
                 <h:panelGroup id="display">           
-                    <p:panelGrid columns="2" rendered="#{licenseBean.selected != null}">
+                    <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-4, ui-grid-col-8" styleClass="ui-grid-col-12" rendered="#{licenseBean.selected != null}">
                         <p:outputLabel value="Наименование:" for="name" indicateRequired="true"/>
                         <p:inputText id="name" value="#{licenseBean.selected.name}" 
                                      required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_name}"/>
@@ -42,15 +42,11 @@
                         
                         <p:outputLabel value="Лицензиат:" for="licensor" indicateRequired="true"/>
                         <p:inputText id="licensor" value="#{licenseBean.selected.licensor}" 
-                                     required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_licensor}"/>
+                                     required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_licensor}"/>                                                
                         
-                        <p:outputLabel value="Модули:" for="modules" indicateRequired="true"/>
-                        <p:selectManyMenu id="modules" value="#{licenseBean.modules}" showCheckbox="true" styleClass="ui-grid-col-12">
-                            <f:selectItem itemLabel="Процессы" itemValue="processes" />
-                            <f:selectItem itemLabel="Делопроизводство" itemValue="delo" />
-                            <f:selectItem itemLabel="Договоры" itemValue="contracts" />
-                        </p:selectManyMenu>
                     </p:panelGrid>
+                    <ui:include src="/license/common/modules.xhtml" />
+                    
                     <p:commandButton actionListener="#{licenseBean.update}" value="#{bundle.Save}" 
                                      update="display,:LicenseListForm:datalist,:growl" 
                                      oncomplete="PF('LicenseEditDialog').hide();"/>

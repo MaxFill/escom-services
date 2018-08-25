@@ -79,12 +79,12 @@ public class License implements Serializable{
     @Column(name = "ModulesJSON")
     @XmlElement(name = "Modules")
     private String modulesJSON;    
-        
+
     public License() {
     }
 
     /* GETS & SETS */
-    
+ 
     public Integer getId() {
         return id;
     }
@@ -147,7 +147,7 @@ public class License implements Serializable{
     public void setModulesJSON(String modulesJSON) {
         this.modulesJSON = modulesJSON;
     }   
-    
+
     public String toXML(){
         StringWriter sw = new StringWriter();
         JAXB.marshal(this, sw);

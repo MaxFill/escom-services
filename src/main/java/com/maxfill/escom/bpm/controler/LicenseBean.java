@@ -30,7 +30,7 @@ public class LicenseBean implements Serializable {
     private LicenseFacade ejbFacade;
     private List<License> items = null;
     private License selected;
-                 
+       
     private List<String> modules;            
     
     /**
