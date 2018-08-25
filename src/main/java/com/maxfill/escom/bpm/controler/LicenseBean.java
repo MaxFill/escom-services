@@ -19,6 +19,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.apache.commons.lang3.StringUtils;
 
 @Named
 @SessionScoped
@@ -67,10 +68,8 @@ public class LicenseBean implements Serializable {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("LicenseUpdated"));
     }
 
-    private void saveModulesToJSON(){
-        List<String> modulesList = selected.getModules();
-        String[] arr = modulesList.toArray(new String[modulesList.size()]);        
-        String modules = Arrays.toString(arr);
+    private void saveModulesToJSON(){          
+        String modules = StringUtils.join(selected.getModules(), ',');
         selected.setModulesJSON(modules);
     }
     
