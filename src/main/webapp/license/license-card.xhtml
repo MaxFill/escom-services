@@ -12,6 +12,7 @@
         </ui:define>
 
         <ui:define name="body">
+            #{licenseCardBean.onBeforeLoad()}
             <h:form id="LicenseCardForm">                
                 <p:panelGrid layout="grid" columns="2" columnClasses="ui-grid-col-6, ui-grid-col-6" rendered="#{licenseCardBean.license != null}">
                     <p:outputLabel value="Наименование:" for="name" indicateRequired="true"/>
@@ -40,7 +41,7 @@
                                  required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_licensor}"/>
                 </p:panelGrid>
                 <p:commandButton value="#{bundle.Save}" actionListener="#{licenseCardBean.save}" update="LicenseCardForm"/>
-                <p:commandButton value="#{bundle.Cancel}" immediate="true" action="#{licenseCardBean.onClose()}"/>
+                <p:commandButton value="#{bundle.Cancel}" immediate="true" action="list"/>
             </h:form>        
         </ui:define>
     </ui:composition>

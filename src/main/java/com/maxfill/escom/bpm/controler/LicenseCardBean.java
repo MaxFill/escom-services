@@ -4,8 +4,8 @@ import com.maxfill.escom.bpm.model.License;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
@@ -28,12 +28,19 @@ public class LicenseCardBean implements Serializable{
         System.out.println("bean destroy");
     }
     
-    public String save(){
-        return "";
+    public void onBeforeLoad(){
+        System.out.println("onBeforeLoad!");
+    }
+    
+    public void save(){
+        System.out.println("save!"); 
+        //PrimeFaces.current().dialog().closeDynamic(null);
     }
     
     public String onClose(){
-        return "";
+        System.out.println("close");
+        //PrimeFaces.current().dialog().closeDynamic(null);
+        return "list";
     }
     
     public License getLicense() {

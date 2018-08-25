@@ -25,8 +25,8 @@
                                 currentPageReportTemplate="Всего записей: {totalRecords}, отображено {startRecord}-{endRecord} "
                                 tableStyle="table-layout: auto;" styleClass="ui-grid-col-12 without-spaces">
                         
-                        <p:ajax event="rowSelect"   update="createButton editButton deleteButton cardButton"/>
-                        <p:ajax event="rowUnselect" update="createButton editButton deleteButton cardButton"/>
+                        <p:ajax event="rowSelect"   update="createButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton editButton deleteButton"/>
 
                         <p:column headerText="Наименование">
                             <h:outputText value="#{item.name}"/>
@@ -51,13 +51,13 @@
                             <h:outputText value="#{item.licensor}"/>
                         </p:column>
                         <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{licenseBean.prepareCreate}" update=":LicenseCreateForm" oncomplete="PF('LicenseCreateDialog').show()"/> 
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" 
+                                             actionListener="#{licenseBean.prepareCreate}" update=":LicenseCreateForm" 
+                                             oncomplete="PF('LicenseCreateDialog').show()"/> 
                             <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" 
                                              update=":LicenseEditForm" oncomplete="PF('LicenseEditDialog').show()" disabled="#{empty licenseBean.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{licenseBean.destroy}" update=":growl,datalist" disabled="#{empty licenseBean.selected}"/>                            
-                            <p:commandLink id="cardButton" value="Открыть карточку"
-                                            action="license-card" ajax="false" target="_blank"
-                                            disabled="#{empty licenseBean.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" 
+                                             actionListener="#{licenseBean.destroy}" update=":growl,datalist" disabled="#{empty licenseBean.selected}"/>
                         </f:facet>
                     </p:dataTable>
                 </p:panelGrid>

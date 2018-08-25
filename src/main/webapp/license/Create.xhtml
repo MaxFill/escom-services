@@ -36,8 +36,9 @@
                         <p:inputText id="licensor" value="#{licenseBean.selected.licensor}" 
                                      required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_licensor}"/>
                     </p:panelGrid>
-                    <p:commandButton actionListener="#{licenseBean.create}" value="#{bundle.Save}" update="display,:LicenseListForm:datalist,:growl" oncomplete="handleSubmit(args,'LicenseCreateDialog');"/>
-                    <p:commandButton value="#{bundle.Cancel}" immediate="true" onclick="LicenseCreateDialog.hide()"/>
+                    <p:commandButton actionListener="#{licenseBean.create}" value="#{bundle.Save}" update="display,:LicenseListForm:datalist,:growl" 
+                                     oncomplete="PF('LicenseEditDialog').hide();"/>
+                    <p:commandButton value="#{bundle.Cancel}" immediate="true" onclick="PF('LicenseCreateDialog').hide()"/>
                 </h:panelGroup>
             </h:form>
         </p:dialog>

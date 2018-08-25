@@ -1,10 +1,10 @@
 package com.maxfill.escom.bpm.controler;
 
+import com.google.gson.Gson;
 import com.maxfill.escom.bpm.model.License;
 import com.maxfill.escom.bpm.model.LicenseFacade;
 import com.maxfill.escom.bpm.util.JsfUtil;
 import com.maxfill.escom.bpm.util.JsfUtil.PersistAction;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,16 +28,9 @@ public class LicenseBean implements Serializable {
     private LicenseFacade ejbFacade;
     private List<License> items = null;
     private License selected;
-    
+            
     public LicenseBean() {
-    }
-    
-    public License getSelected() {
-        return selected;
-    }
-    public void setSelected(License selected) {
-        this.selected = selected;
-    }
+    }      
 
     protected void setEmbeddableKeys() {
     }
@@ -56,6 +49,7 @@ public class LicenseBean implements Serializable {
     }
 
     public void create() {
+        saveModulesToJSON();
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("LicenseCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
@@ -63,9 +57,16 @@ public class LicenseBean implements Serializable {
     }
 
     public void update() {
+        saveModulesToJSON();        
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("LicenseUpdated"));
     }
 
+    private void saveModulesToJSON(){
+        Gson gson = new Gson();        
+        String modulesJSON = gson.toJson(selected.getModules());
+        selected.setModulesJSON(modulesJSON);
+    }
+    
     public void destroy() {
         persist(PersistAction.DELETE, ResourceBundle.getBundle("/Bundle").getString("LicenseDeleted"));
         if (!JsfUtil.isValidationFailed()) {
@@ -121,6 +122,15 @@ public class LicenseBean implements Serializable {
         return getFacade().findAll();
     }
 
+    /* GETS & SETS */
+        
+    public License getSelected() {
+        return selected;
+    }
+    public void setSelected(License selected) {
+        this.selected = selected;
+    }
+    
     @FacesConverter(forClass = License.class)
     public static class licenseBeanConverter implements Converter {
 

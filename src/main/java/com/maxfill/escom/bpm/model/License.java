@@ -1,5 +1,6 @@
 package com.maxfill.escom.bpm.model;
 
+import com.google.gson.Gson;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -10,7 +11,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import javax.xml.bind.annotation.XmlTransient;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Класс сущности Лицензия
@@ -69,9 +75,21 @@ public class License implements Serializable{
     @XmlElement(name = "Licensor")
     private String licensor;
 
+    @Basic(optional = false)
+    @Size(max = 255)
+    @Column(name = "ModulesJSON")
+    @XmlElement(name = "ModulesJSON")
+    private String modulesJSON;
+    
+    @Transient
+    @XmlTransient
+    private List<String> modules = new ArrayList<>();
+        
     public License() {
     }
 
+    /* GETS & SETS */
+    
     public Integer getId() {
         return id;
     }
@@ -128,6 +146,24 @@ public class License implements Serializable{
         this.licensor = licensor;
     }
 
+    public String getModulesJSON() {
+        return modulesJSON;
+    }
+    public void setModulesJSON(String modulesJSON) {
+        this.modulesJSON = modulesJSON;
+    }
+    
+    public List<String> getModules() {
+        if (modules.isEmpty() && StringUtils.isNoneEmpty(modulesJSON)){
+            Gson gson = new Gson();
+            modules = gson.fromJson(modulesJSON, List.class);
+        }
+        return modules;
+    }
+    public void setModules(List<String> modules) {
+        this.modules = modules;
+    }
+    
     public String toXML(){
         StringWriter sw = new StringWriter();
         JAXB.marshal(this, sw);

@@ -7,22 +7,24 @@
         <resource-bundle>
             <base-name>/Bundle</base-name>
             <var>bundle</var>
-        </resource-bundle>
-        <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
+        </resource-bundle>        
         <locale-config>
-            <default-locale>en</default-locale>
+            <default-locale>ru</default-locale>
         </locale-config>
-    </application>
+    </application>    
     
-    <factory>
-        <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
-    </factory>
     <navigation-rule>
         <from-view-id>*</from-view-id>         
                                 
         <navigation-case>
             <from-outcome>license-card</from-outcome>
             <to-view-id>/faces/license/license-card.xhtml</to-view-id>
+            <redirect />
+        </navigation-case> 
+        
+        <navigation-case>
+            <from-outcome>list</from-outcome>
+            <to-view-id>/license/List.xhtml</to-view-id>
             <redirect />
         </navigation-case> 
     </navigation-rule>
