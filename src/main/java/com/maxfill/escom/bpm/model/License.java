@@ -78,7 +78,7 @@ public class License implements Serializable{
     @Basic(optional = false)
     @Size(max = 255)
     @Column(name = "ModulesJSON")
-    @XmlElement(name = "ModulesJSON")
+    @XmlElement(name = "Modules")
     private String modulesJSON;
     
     @Transient

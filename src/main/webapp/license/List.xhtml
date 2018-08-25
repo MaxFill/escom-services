@@ -51,6 +51,8 @@
                             <h:outputText value="#{item.licensor}"/>
                         </p:column>
                         <f:facet name="footer">
+                            <p:commandButton value="#{bundle.Refres}" update="datalist" actionListener="#{licenseBean.onRefresh()}" />
+                            <p:spacer width="10"/>
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" 
                                              actionListener="#{licenseBean.prepareCreate}" update=":LicenseCreateForm" 
                                              oncomplete="PF('LicenseCreateDialog').show()"/> 

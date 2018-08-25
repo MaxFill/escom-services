@@ -32,6 +32,11 @@ public class LicenseBean implements Serializable {
     public LicenseBean() {
     }      
 
+    public void onRefresh(){
+        selected = null;
+        items = null;
+    }
+    
     protected void setEmbeddableKeys() {
     }
 

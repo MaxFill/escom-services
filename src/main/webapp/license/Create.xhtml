@@ -35,6 +35,16 @@
                         <p:outputLabel value="Лицензиат:" for="licensor" indicateRequired="true"/>
                         <p:inputText id="licensor" value="#{licenseBean.selected.licensor}" 
                                      required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_licensor}"/>
+                        
+                        <p:outputLabel value="Модули:" for="modules" indicateRequired="true"/>
+                        <p:selectManyMenu id="modules" value="#{licenseBean.selected.modules}" showCheckbox="true"                                
+                                label="#{bundle.Select}"
+                                styleClass="ui-grid-col-12">
+                            <f:selectItem itemLabel="Процессы" itemValue="processes" />
+                            <f:selectItem itemLabel="Делопроизводство" itemValue="delo" />
+                            <f:selectItem itemLabel="Договоры" itemValue="contracts" />
+                        </p:selectManyMenu>
+                        
                     </p:panelGrid>
                     <p:commandButton actionListener="#{licenseBean.create}" value="#{bundle.Save}" update="display,:LicenseListForm:datalist,:growl" 
                                      oncomplete="PF('LicenseEditDialog').hide();"/>
