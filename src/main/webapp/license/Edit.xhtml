@@ -45,9 +45,7 @@
                                      required="true" requiredMessage="#{bundle.EditLicenseRequiredMessage_licensor}"/>
                         
                         <p:outputLabel value="Модули:" for="modules" indicateRequired="true"/>
-                        <p:selectManyMenu id="modules" value="#{licenseBean.selected.modules}" showCheckbox="true"                                
-                                label="#{bundle.Select}"
-                                styleClass="ui-grid-col-12">
+                        <p:selectManyMenu id="modules" value="#{licenseBean.modules}" showCheckbox="true" styleClass="ui-grid-col-12">
                             <f:selectItem itemLabel="Процессы" itemValue="processes" />
                             <f:selectItem itemLabel="Делопроизводство" itemValue="delo" />
                             <f:selectItem itemLabel="Договоры" itemValue="contracts" />

@@ -1,6 +1,5 @@
 package com.maxfill.escom.bpm.model;
 
-import com.google.gson.Gson;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang3.StringUtils;
 
@@ -80,11 +78,7 @@ public class License implements Serializable{
     @Size(max = 255)
     @Column(name = "ModulesJSON")
     @XmlElement(name = "Modules")
-    private String modulesJSON;
-    
-    @Transient
-    @XmlTransient
-    private List<String> modules = new ArrayList<>();
+    private String modulesJSON;    
         
     public License() {
     }
@@ -152,18 +146,7 @@ public class License implements Serializable{
     }
     public void setModulesJSON(String modulesJSON) {
         this.modulesJSON = modulesJSON;
-    }
-   
-    public List<String> getModules() {
-        if (modules.isEmpty() && StringUtils.isNoneEmpty(modulesJSON)){
-            String[] arr = modulesJSON.split(",");
-            modules = Arrays.asList(arr);
-        }
-        return modules;
-    }
-    public void setModules(List<String> modules) {
-        this.modules = modules;
-    }
+    }   
     
     public String toXML(){
         StringWriter sw = new StringWriter();

@@ -1,11 +1,11 @@
 package com.maxfill.escom.bpm.controler;
 
-import com.google.gson.Gson;
 import com.maxfill.escom.bpm.model.License;
 import com.maxfill.escom.bpm.model.LicenseFacade;
 import com.maxfill.escom.bpm.util.JsfUtil;
 import com.maxfill.escom.bpm.util.JsfUtil.PersistAction;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -30,13 +30,16 @@ public class LicenseBean implements Serializable {
     private LicenseFacade ejbFacade;
     private List<License> items = null;
     private License selected;
-            
-    public LicenseBean() {
-    }      
-
+                 
+    private List<String> modules;            
+    
+    /**
+     * Обновление списка лицензий
+     */
     public void onRefresh(){
         selected = null;
         items = null;
+        modules.clear();
     }
     
     protected void setEmbeddableKeys() {
@@ -49,12 +52,23 @@ public class LicenseBean implements Serializable {
         return ejbFacade;
     }
 
-    public License prepareCreate() {
+    public void prepareCreate() {
         selected = new License();
         initializeEmbeddableKey();
-        return selected;
+        prepareOpenItem();
     }
 
+    public void prepareEdit(){
+        prepareOpenItem();
+    }        
+    
+    private void prepareOpenItem(){
+        if (StringUtils.isNoneEmpty(selected.getModulesJSON())){            
+            String[] arr = selected.getModulesJSON().split(",");            
+            modules = new ArrayList<>(Arrays.asList(arr));
+        }
+    }
+    
     public void create() {
         saveModulesToJSON();
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("LicenseCreated"));
@@ -69,8 +83,8 @@ public class LicenseBean implements Serializable {
     }
 
     private void saveModulesToJSON(){          
-        String modules = StringUtils.join(selected.getModules(), ',');
-        selected.setModulesJSON(modules);
+        String str = StringUtils.join(modules, ',');
+        selected.setModulesJSON(str);
     }
     
     public void destroy() {
@@ -130,6 +144,13 @@ public class LicenseBean implements Serializable {
 
     /* GETS & SETS */
         
+    public List<String> getModules() {
+        return modules;
+    }
+    public void setModules(List<String> modules) {
+        this.modules = modules;
+    }
+    
     public License getSelected() {
         return selected;
     }
