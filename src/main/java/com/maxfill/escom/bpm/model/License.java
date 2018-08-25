@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -152,11 +153,11 @@ public class License implements Serializable{
     public void setModulesJSON(String modulesJSON) {
         this.modulesJSON = modulesJSON;
     }
-    
+   
     public List<String> getModules() {
         if (modules.isEmpty() && StringUtils.isNoneEmpty(modulesJSON)){
-            Gson gson = new Gson();
-            modules = gson.fromJson(modulesJSON, List.class);
+            String[] arr = modulesJSON.split(",");
+            modules = Arrays.asList(arr);
         }
         return modules;
     }

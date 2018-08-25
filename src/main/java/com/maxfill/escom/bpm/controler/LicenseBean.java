@@ -6,6 +6,7 @@ import com.maxfill.escom.bpm.model.LicenseFacade;
 import com.maxfill.escom.bpm.util.JsfUtil;
 import com.maxfill.escom.bpm.util.JsfUtil.PersistAction;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -67,9 +68,10 @@ public class LicenseBean implements Serializable {
     }
 
     private void saveModulesToJSON(){
-        Gson gson = new Gson();        
-        String modulesJSON = gson.toJson(selected.getModules());
-        selected.setModulesJSON(modulesJSON);
+        List<String> modulesList = selected.getModules();
+        String[] arr = modulesList.toArray(new String[modulesList.size()]);        
+        String modules = Arrays.toString(arr);
+        selected.setModulesJSON(modules);
     }
     
     public void destroy() {
